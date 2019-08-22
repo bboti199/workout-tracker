@@ -18,7 +18,8 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
  */
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id)
+    .select('-password');
     res.json(user);
   } catch (err) {
     console.error(err);
@@ -90,7 +91,7 @@ router.post(
         payload,
         process.env.JWT_SECRET,
         {
-          expiresIn: 36000
+          expiresIn: 3600
         },
         (err, token) => {
           if (err) throw err;

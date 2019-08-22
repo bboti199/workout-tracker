@@ -38,20 +38,77 @@ router.get('/:bodyPart', auth, async (req, res) => {
 });
 
 /**
+ * @route   DELETE api/exercises/:id
+ * @desc    Remove exercise
+ * @access  Private & Admin
+ */
+router.delete('/:id', isAdmin, async (req, res) => {
+  try {
+    await Exercise.findOneAndRemove({ _id: req.params.id });
+
+    res.json({ msg: 'Exercise removed successfully!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+/**
+ * @route   PUT api/exercises/:id/image
+ * @desc    Update exercise image
+ * @access  Private & Admin
+ */
+router.put(
+  '/:id/image',
+  [
+    isAdmin,
+    [
+      check('imageUrl', 'Image url is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { imageUrl } = req.body;
+
+    try {
+      const exercise = await Exercise.findById(req.params.id);
+
+      exercise.imageUrl = imageUrl;
+
+      await exercise.save();
+
+      res.json(exercise);
+    } catch (err) {
+      console.error(error);
+      res.status(500).send('Internal Server Erorr');
+    }
+  }
+);
+
+/**
  * @route   POST api/exercises
  * @desc    Add a new exercise
- * @access  Private
+ * @access  Private & Admin
  */
 router.post(
   '/',
-  isAdmin,
   [
-    check('name', 'Name is required')
-      .not()
-      .isEmpty(),
-    check('bodyPart', 'Body part is required')
-      .not()
-      .isEmpty()
+    isAdmin,
+    [
+      check('name', 'Name is required')
+        .not()
+        .isEmpty(),
+      check('bodyPart', 'Body part is required')
+        .not()
+        .isEmpty()
+    ]
   ],
   async (req, res) => {
     const errors = validationResult(req);

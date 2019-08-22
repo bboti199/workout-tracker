@@ -21,19 +21,11 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  routine: [
+  routines: [
     {
-      exerciseName: {
-        type: String,
-        required: true
-      },
-      sets: {
-        type: Number,
-        default: 3
-      },
-      repetitions: {
-        type: Number,
-        default: 8
+      routine: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'routine'
       }
     }
   ],
