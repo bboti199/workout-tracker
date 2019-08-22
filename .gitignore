@@ -2,6 +2,7 @@
 # Created by https://www.gitignore.io/api/node
 # Edit at https://www.gitignore.io/?templates=node
 
+/utils/images
 /assets
 yarn.lock
 ### Node ###
