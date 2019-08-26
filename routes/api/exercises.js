@@ -12,7 +12,7 @@ const isAdmin = require('../../middleware/isAdmin');
  * @desc    List all exercises
  * @access  Public
  */
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const exercises = await Exercise.find();
     res.json(exercises);

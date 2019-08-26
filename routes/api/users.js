@@ -12,14 +12,13 @@ const auth = require('../../middleware/auth');
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 
 /**
- * @route   GET api/userse
+ * @route   GET api/users
  * @desc    Get current user data
  * @access  Private
  */
 router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-    .select('-password');
+    const user = await User.findById(req.user.id).select('-password');
     res.json(user);
   } catch (err) {
     console.error(err);

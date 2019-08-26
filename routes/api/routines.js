@@ -47,10 +47,13 @@ router.post(
       check('routineName', 'Routine name is required')
         .not()
         .isEmpty(),
-      check('exercises.*.exercise', 'Exercise ID is required')
+      check('routine.*.exercise', 'Exercise ID is required')
         .not()
         .isEmpty(),
-      check('exercises.*.weight', 'Weight is requierd and has to be a number')
+      check(
+        'routine.*.progress.*.weight',
+        'Weight is requierd and has to be a number'
+      )
         .isNumeric()
         .not()
         .isEmpty()
@@ -62,27 +65,26 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    const { routineName, routine } = req.body;
+
+    routine.map(r => {
+      Exercise.findById(r.exercise)
+        .then(e => {
+          if (!e) {
+            return res.status(400).json({ msg: 'Invalid exercise' });
+          }
+        })
+        .catch(err => {
+          if (err.kind === 'ObjectId') {
+            return res.json({ msg: 'Invalid exercise' });
+          }
+        });
+    });
+
     try {
-      const { routineName, exercises } = req.body;
-
-      exercises.map(exercise => {
-        Exercise.findById(exercise.exercise)
-          .then(e => {
-            if (!e) {
-              return res.status(400).json({ msg: 'Invalid exercise' });
-            }
-          })
-          .catch(err => {
-            if (err.kind === 'ObjectId') {
-              return res.status(400).json({ msg: 'Invalid exercise' });
-            }
-            return res.status(400).json(err);
-          });
-      });
-
       const newRoutine = new Routine({
         routineName,
-        routine: exercises
+        routine
       });
 
       await newRoutine.save();
@@ -92,10 +94,10 @@ router.post(
 
       await user.save();
 
-      res.json(newRoutine);
+      return res.json(newRoutine);
     } catch (err) {
       console.error(err);
-      res.status(500).send('Internal Server Erorr');
+      return res.status(500).send('Internal Server Erorr');
     }
   }
 );
@@ -107,7 +109,7 @@ router.post(
  */
 router.delete('/:routineId', auth, async (req, res) => {
   try {
-    Routine.findOneAndRemove({ _id: req.params.routineId });
+    await Routine.findOneAndRemove({ _id: req.params.routineId });
 
     const user = await User.findById(req.user.id);
 
@@ -123,6 +125,99 @@ router.delete('/:routineId', auth, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Erorr');
+  }
+});
+
+/**
+ * @route   POST api/routines/:routineId
+ * @desc    Add progress for specific routine
+ * @access  Private
+ */
+router.post(
+  '/:routineId',
+  [
+    auth,
+    [
+      check('exercise', 'Exercise ID is required')
+        .not()
+        .isEmpty(),
+      check('weight', 'Weight is requierd and has to be a number')
+        .isNumeric()
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+      const { exercise, weight } = req.body;
+
+      const exerciseFound = await Exercise.findById(exercise);
+
+      if (!exerciseFound) {
+        return res.status(404).json({ msg: 'Exercise not found' });
+      }
+
+      const routine = await Routine.findById(req.params.routineId).populate(
+        'routine.exercise'
+      );
+
+      routine.routine.map(r => {
+        if (r.exercise._id == exercise) {
+          const prevItem = r.progress[r.progress.length - 1];
+          const newProgressItem = {
+            weight,
+            sets: prevItem.sets,
+            repetitions: prevItem.repetitions
+          };
+
+          if (req.body.sets !== undefined) {
+            newProgressItem.sets = req.body.sets;
+          }
+
+          if (req.body.repetitions !== undefined) {
+            newProgressItem.repetitions = req.body.repetitions;
+          }
+
+          r.progress.unshift(newProgressItem);
+        }
+      });
+
+      await routine.save();
+
+      res.json(routine);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send('Internal Server Erorr');
+    }
+  }
+);
+
+/**
+ * @route   GET api/routines/:routineId/progress
+ * @desc    Get routine progress
+ * @access  Private
+ */
+router.get('/:routineId/progress', auth, async (req, res) => {
+  try {
+    const routine = await Routine.findById(req.params.routineId).populate(
+      'routine.exercise',
+      {
+        _id: 0,
+        name: 1,
+        date: 1,
+        imageUrl: 1
+      }
+    );
+
+    res.json(routine.routine);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send('Internal Server Erorr');
   }
 });
 
