@@ -1,58 +1,10 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { Fragment, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
-function Copyright() {
-  return (
-    <Typography variant='body2' color='textSecondary' align='center'>
-      {'Copyright © OverloadTracker '}
-      {new Date().getFullYear()}
-      {'. Built with '}
-      <Link color='inherit' href='https://material-ui.com/'>
-        Material-UI.
-      </Link>
-    </Typography>
-  );
-}
+import { connect } from 'react-redux';
+import { login } from '../../redux/actions/auth';
 
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor: theme.palette.common.white
-    }
-  },
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1)
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2)
-  }
-}));
-
-export default function Login() {
-  const classes = useStyles();
-
+const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -67,67 +19,79 @@ export default function Login() {
   const onSubmit = e => {
     e.preventDefault();
 
-    console.log({ email, password });
-
-    setFormData({ email: '', password: '' });
+    login(email, password);
   };
 
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
+
   return (
-    <Container component='main' maxWidth='xs'>
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component='h1' variant='h5'>
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={e => onSubmit(e)}>
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            label='Email Address'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            value={email}
-            onChange={e => onChange(e)}
-          />
-          <TextField
-            variant='outlined'
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='Password'
-            type='password'
-            value={password}
-            autoComplete='current-password'
-            onChange={e => onChange(e)}
-          />
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            color='primary'
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container justify='center' alignItems='center'>
-            <Grid item>
-              <Link component={RouterLink} to='/register' variant='body2'>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+    <Fragment>
+      <section className='hero is-light is-fullheight-with-navbar'>
+        <div className='hero-body'>
+          <div className='container has-text-centered'>
+            <div className='column is-4 is-offset-4'>
+              <h3 className='title has-text-grey'>Login</h3>
+              <p className='subtitle has-text-gre'>Please login to proceed.</p>
+              <div className='box'>
+                <figure className='avatar'>
+                  <img src='https://placehold.it/128x128' alt='avatar' />
+                </figure>
+                <form onSubmit={e => onSubmit(e)}>
+                  <div className='field'>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='text'
+                        name='email'
+                        value={email}
+                        onChange={e => onChange(e)}
+                        className='input is-medium'
+                        placeholder='Enter your email'
+                        autoFocus
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-envelope'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <div className='field'>
+                    <div className='control has-icons-left'>
+                      <input
+                        type='password'
+                        name='password'
+                        value={password}
+                        onChange={e => onChange(e)}
+                        className='input is-medium'
+                        placeholder='Enter your password'
+                      />
+                      <span className='icon is-small is-left'>
+                        <i className='fa fa-key'></i>
+                      </span>
+                    </div>
+                  </div>
+                  <button className='button is-block is-success is-medium is-fullwidth'>
+                    Log In
+                  </button>
+                </form>
+                <p>
+                  Don't have an account?{' '}
+                  <Link to='/register'>Register Here</Link>{' '}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </Fragment>
   );
-}
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(
+  mapStateToProps,
+  { login }
+)(Login);
