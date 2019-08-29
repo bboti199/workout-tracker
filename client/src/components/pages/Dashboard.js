@@ -1,13 +1,25 @@
-import React from 'react';
-import Alert from '../layout/Alert';
+import React, { useEffect } from 'react';
 
-const Dashboard = () => {
+import Routines from '../routine/Routines';
+
+import { connect } from 'react-redux';
+import { fetchRoutines } from '../../redux/actions/routines';
+
+const Dashboard = ({ fetchRoutines }) => {
+  useEffect(() => {
+    fetchRoutines();
+  }, []);
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <Alert />
+    <div className='container'>
+      <h1 className='is-size-3' style={{ marginBottom: '3rem' }}>
+        Dashboard
+      </h1>
+      <Routines />
     </div>
   );
 };
 
-export default Dashboard;
+export default connect(
+  null,
+  { fetchRoutines }
+)(Dashboard);

@@ -9,12 +9,6 @@ import Logo from '../../assets/logo.png';
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
     <Fragment>
-      <Link to='/routines' className='navbar-item'>
-        Routines
-      </Link>
-      <Link to='/progress' className='navbar-item'>
-        My Progress
-      </Link>
       <div className='buttons'>
         <Link to='/login' onClick={logout} className='button is-light '>
           Sign Out

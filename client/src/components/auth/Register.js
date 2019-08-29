@@ -38,11 +38,13 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       <section className='hero is-light is-fullheight-with-navbar'>
         <div className='hero-body'>
           <div className='container has-text-centered'>
-            <div className='column is-4 is-offset-4'>
-              <h3 className='title has-text-grey'>Register</h3>
-              <p className='subtitle has-text-gre'>Just one more step...</p>
+            <div className='column is-4 is-offset-4 animated fadeIn'>
+              <h3 className='title has-text-grey-darker'>Register</h3>
+              <p className='subtitle has-text-grey-darker'>
+                Just one more step...
+              </p>
               <div className='box'>
-                <figure className='avatar'>
+                <figure className='avatar' style={{ padding: '1rem 0 2rem 0' }}>
                   <img src='https://placehold.it/128x128' alt='avatar' />
                 </figure>
                 <form onSubmit={e => onSubmit(e)}>
@@ -110,7 +112,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
                       </span>
                     </div>
                   </div>
-                  <button className='button is-block is-success is-medium is-fullwidth'>
+                  <button className='button is-block is-link is-medium is-fullwidth'>
                     Register
                   </button>
                 </form>
