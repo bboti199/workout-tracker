@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import RoutineCard from './RoutineCard';
 import RoutineCardEmtpy from './RoutineCardEmpty';
+import AddNewCard from './AddNewCard';
 import WithSpinner from '../hoc/WithSpinner';
 
 import { connect } from 'react-redux';
@@ -29,6 +30,7 @@ const Routines = ({ routines }) => {
           <RoutineCardEmtpy />
         </div>
       )}
+      <AddNewCard />
     </div>
   );
 };
