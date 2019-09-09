@@ -1,56 +1,93 @@
-import React, { Fragment } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { connect } from 'react-redux';
+import { Link as RouterLink } from 'react-router-dom';
 
 import Cover from '../../assets/cover.jpg';
 
-const style = {
-  backgroundImage: `url(${Cover})`,
-  backgroundSize: 'cover'
-};
-
-const subheadingStyle = {
-  marginTop: '1rem',
-  marginBottom: '3rem'
-};
-
-const Landing = ({ isAuthenticated }) => {
-  if (isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1,
+    overflow: 'hidden'
+  },
+  landing: {
+    backgroundImage: `url(${Cover})`,
+    backgroundSize: 'cover',
+    height: '93vh'
+  },
+  text: {
+    color: '#fff',
+    backgroundColor: '#000',
+    textAlign: 'center',
+    margin: '2rem auto',
+    padding: '.8rem 0',
+    fontWeight: 400,
+    fontFamily: 'Nunito'
+  },
+  progress: {
+    margin: theme.spacing(2)
   }
+}));
+
+const Landing = () => {
+  const classes = useStyles();
+
+  const [{ loading }, setState] = useState({ loading: true });
+
+  useEffect(() => {
+    const bg = new Image();
+    bg.src = Cover;
+
+    bg.onload = () => {
+      setState({ loading: false });
+    };
+  }, []);
 
   return (
-    <Fragment>
-      <div className='hero is-fullheight-with-navbar'>
-        <div className='hero-body' style={style}>
-          <div className='container has-text-centered '>
-            <h1 className='is-size-1-tablet has-text-white has-background-black animated fadeInLeft slow'>
-              Tired of completing sheets for tracking your Gym Progress?
-            </h1>
-            <h2
-              style={subheadingStyle}
-              className='is-size-3-tablet has-text-white has-background-black is-inline-block animated fadeInRight delay-1s'
-            >
-              Use our app to speed up the process!
-            </h2>
-            <div className='has-text-centered animated fadeInUp delay-2s'>
-              <Link
-                to='/login'
-                className='button is-light is-large has-text-black animated pulse delay-3s'
-              >
-                Get Started!
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Fragment>
+    <div className={classes.root}>
+      {loading ? (
+        <CircularProgress className={classes.progress} />
+      ) : (
+        <Grid
+          container
+          direction='column'
+          justify='center'
+          alignItems='center'
+          className={classes.landing}
+        >
+          <Typography
+            variant='h2'
+            component='h2'
+            className={`${classes.text} animated fadeInLeft`}
+          >
+            Tired of completing sheets for tracking your Gym Progress?
+          </Typography>
+
+          <Typography
+            variant='h4'
+            component='h1'
+            className={`${classes.text} animated fadeInRight`}
+          >
+            Use our app to speed up the process!
+          </Typography>
+          <Button
+            color='default'
+            variant='contained'
+            size='large'
+            to='/register'
+            component={RouterLink}
+            className='animated fadeInUp delay-1s'
+          >
+            Get Started!
+          </Button>
+        </Grid>
+      )}
+    </div>
   );
 };
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps)(Landing);
+export default Landing;

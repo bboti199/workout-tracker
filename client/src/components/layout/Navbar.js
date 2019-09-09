@@ -1,71 +1,79 @@
-import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-import { connect } from 'react-redux';
-import { logout } from '../../redux/actions/auth';
+import { Link as RouterLink } from 'react-router-dom';
 
-import Logo from '../../assets/logo.png';
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  link: {
+    '&:hover': {
+      textDecoration: 'none'
+    },
+    textDecoration: 'none',
+    color: 'inherit'
+  },
+  appBar: {
+    position: 'relative',
+    boxShadow: 'none',
+    borderBottom: `1px solid ${theme.palette.grey['100']}`,
+    backgroundColor: 'white'
+  },
+  tabItem: {
+    paddingTop: 20,
+    paddingBottom: 20,
+    minWidth: 'auto'
+  },
+  rightSide: {
+    marginLeft: 'auto',
+    marginRight: -12
+  }
+}));
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
-  const authLinks = (
-    <Fragment>
-      <div className='buttons'>
-        <Link to='/login' onClick={logout} className='button is-light '>
-          Sign Out
-        </Link>
-      </div>
-    </Fragment>
-  );
-
-  const guestLinks = (
-    <Fragment>
-      <div className='buttons'>
-        <Link to='/register' className='button is-info'>
-          <strong>Register</strong>
-        </Link>
-        <Link to='/login' className='button is-light'>
-          Log in
-        </Link>
-      </div>
-    </Fragment>
-  );
+export default function Navbar(props) {
+  const classes = useStyles();
 
   return (
-    <Fragment>
-      <nav className='navbar is-transparent' role='navigation'>
-        <div>
-          <div className='navbar-item'>
-            <img src={Logo} alt='logo' className='navbar-brand' />
-          </div>
-        </div>
-        <div className='navbar-menu'>
-          <div className='navbar-start'>
-            {!loading &&
-              (isAuthenticated ? (
-                <Link className='navbar-item' to='/dashboard'>
-                  Home
-                </Link>
-              ) : (
-                <Link className='navbar-item' to='/'>
-                  Home
-                </Link>
-              ))}
-          </div>
-          <div className='navbar-end'>
-            <div className='navbar-item'>
-              {!loading && (isAuthenticated ? authLinks : guestLinks)}
-            </div>
-          </div>
-        </div>
-      </nav>
-    </Fragment>
-  );
-};
-const mapStateToProps = state => ({
-  auth: state.auth
-});
+    <AppBar position='absolute' color='default' className={classes.appBar}>
+      <Toolbar>
+        <Link to='/' component={RouterLink} className={classes.link}>
+          <Typography variant='h6' className={classes.menuButton}>
+            TrackR
+          </Typography>
+        </Link>
 
-export default connect(
-  mapStateToProps,
-  { logout }
-)(Navbar);
+        <Tabs
+          indicatorColor='primary'
+          textColor='primary'
+          className={classes.rightSide}
+          value={false}
+        >
+          <Tab
+            key={1}
+            component={RouterLink}
+            to='/login'
+            className={classes.tabItem}
+            label='Login'
+          />
+          <Tab
+            key={2}
+            component={RouterLink}
+            to='/register'
+            className={classes.tabItem}
+            label='Register'
+          />
+        </Tabs>
+      </Toolbar>
+    </AppBar>
+  );
+}
