@@ -27,7 +27,8 @@ const validationSchema = Yup.object().shape({
     .required('Password is required'),
   passwordConfirm: Yup.string()
     .required('Password confirmation is required')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+  name: Yup.string().required('You must provide a username')
 });
 
 const useStyles = makeStyles(theme => ({
@@ -77,6 +78,20 @@ const C = ({
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant='outlined'
+                error={errors.name && touched.name}
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                helperText={errors.name && touched.name && errors.name}
+                fullWidth
+                label='Username'
+                name='name'
+                autoComplete='name'
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 variant='outlined'
@@ -161,7 +176,12 @@ const C = ({
 
 export const RegisterView = withFormik({
   validationSchema,
-  mapPropsToValues: () => ({ email: '', password: '', passwordConfirm: '' }),
+  mapPropsToValues: () => ({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: ''
+  }),
   handleSubmit: async (values, { props, setErrors }) => {
     const errors = await props.submit(values);
 

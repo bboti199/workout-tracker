@@ -4,8 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { connect } from 'react-redux';
 
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 
 import Cover from '../../assets/cover.jpg';
 
@@ -33,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Landing = () => {
+const Landing = ({ isAuthenticated }) => {
   const classes = useStyles();
 
   const [{ loading }, setState] = useState({ loading: true });
@@ -47,7 +48,9 @@ const Landing = () => {
     };
   }, []);
 
-  return (
+  return isAuthenticated ? (
+    <Redirect to='/dashboard' />
+  ) : (
     <div className={classes.root}>
       {loading ? (
         <CircularProgress className={classes.progress} />
@@ -90,4 +93,8 @@ const Landing = () => {
   );
 };
 
-export default Landing;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps)(Landing);
