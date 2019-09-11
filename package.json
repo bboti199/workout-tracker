@@ -1,6 +1,9 @@
 {
   "name": "progressive-overload-tracker",
   "version": "1.0.0",
+  "engines": {
+    "yarn": "1.17.3"
+  },
   "description": "An app to track workout progressivity",
   "main": "server.js",
   "scripts": {
