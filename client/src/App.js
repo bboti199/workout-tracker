@@ -9,6 +9,7 @@ import Dashboard from './components/pages/Dashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
+import Alert from './components/layout/Alert';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -28,6 +29,7 @@ function App() {
     <Provider store={store}>
       <Fragment>
         <Navbar />
+        <Alert />
         <Switch>
           <Route exact path='/' component={Landing} />
           <Route exact path='/login' component={LoginConnector} />
