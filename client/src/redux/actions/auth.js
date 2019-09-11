@@ -1,6 +1,10 @@
 import axios from 'axios';
-import { setAlert } from './alert';
+import { enqueueSnackbar, closeSnackbar } from './notification';
 import setAuthToken from '../../utils/setAuthToken';
+
+import React from 'react';
+import Button from '@material-ui/core/Button';
+
 import {
   REGISTER_FAIL,
   REGISTER_SUCCESS,
@@ -59,7 +63,24 @@ export const register = ({ name, email, password }) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'error')));
+      errors.forEach(error =>
+        dispatch(
+          enqueueSnackbar({
+            message: error.msg,
+            options: {
+              variant: 'error',
+              action: key => (
+                <Button
+                  style={{ color: 'white' }}
+                  onClick={() => dispatch(closeSnackbar(key))}
+                >
+                  dissmiss
+                </Button>
+              )
+            }
+          })
+        )
+      );
     }
 
     dispatch({
@@ -94,7 +115,24 @@ export const login = (email, password) => async dispatch => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, 'error')));
+      errors.forEach(error =>
+        dispatch(
+          enqueueSnackbar({
+            message: error.msg,
+            options: {
+              variant: 'error',
+              action: key => (
+                <Button
+                  style={{ color: 'white' }}
+                  onClick={() => dispatch(closeSnackbar(key))}
+                >
+                  dissmiss
+                </Button>
+              )
+            }
+          })
+        )
+      );
     }
 
     dispatch({

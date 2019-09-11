@@ -7,3 +7,6 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
+export const ENQUEUE_SNACKBAR = 'ENQUEUE_SNACKBAR';
+export const CLOSE_SNACKBAR = 'CLOSE_SNACKBAR';
+export const REMOVE_SNACKBAR = 'REMOVE_SNACKBAR';
