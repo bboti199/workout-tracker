@@ -5,7 +5,7 @@
     "yarn": "1.17.3",
     "node": "10.15.2"
   },
-  "description": "An app to track workout progressivity",
+  "description": "An app to track workout progress",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
