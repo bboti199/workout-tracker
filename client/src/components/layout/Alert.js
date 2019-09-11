@@ -102,25 +102,27 @@ const Alert = ({ alerts }) => {
     <div>
       {alerts !== null &&
         alerts.length > 0 &&
-        alerts.map(alert => (
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center'
-            }}
-            open={open}
-            autoHideDuration={5000}
-            key={alert.id}
-            onClose={handleClose}
-          >
-            <MySnackbarContentWrapper
+        alerts.map(alert => {
+          return (
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              open={open}
+              autoHideDuration={5000}
+              key={alert.id}
               onClose={handleClose}
-              variant={alert.alertType}
-              message={alert.msg}
-              className={classes.margin}
-            />
-          </Snackbar>
-        ))}
+            >
+              <MySnackbarContentWrapper
+                onClose={handleClose}
+                variant={alert.alertType}
+                message={alert.msg}
+                className={classes.margin}
+              />
+            </Snackbar>
+          );
+        })}
     </div>
   );
 };
