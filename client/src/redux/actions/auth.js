@@ -68,13 +68,14 @@ export const register = ({ name, email, password }) => async dispatch => {
           enqueueSnackbar({
             message: error.msg,
             options: {
+              key: new Date().getTime() + Math.random(),
               variant: 'error',
               action: key => (
                 <Button
                   style={{ color: 'white' }}
                   onClick={() => dispatch(closeSnackbar(key))}
                 >
-                  dissmiss
+                  got it
                 </Button>
               )
             }
@@ -120,13 +121,14 @@ export const login = (email, password) => async dispatch => {
           enqueueSnackbar({
             message: error.msg,
             options: {
+              key: new Date().getTime() + Math.random(),
               variant: 'error',
               action: key => (
                 <Button
                   style={{ color: 'white' }}
                   onClick={() => dispatch(closeSnackbar(key))}
                 >
-                  dissmiss
+                  got it
                 </Button>
               )
             }

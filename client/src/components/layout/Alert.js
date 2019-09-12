@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 import { removeSnackbar } from '../../redux/actions/notification';
 
-class Alert extends Component {
+class Alert extends React.Component {
   displayed = [];
 
   storeDisplayed = id => {
