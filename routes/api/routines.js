@@ -35,6 +35,25 @@ router.get('/', auth, async (req, res) => {
 });
 
 /**
+ * @route   GET api/routines/:routineId
+ * @desc    List all routines of user
+ * @access  Private
+ */
+router.get('/:routineId', auth, async (req, res) => {
+  try {
+    const routine = await Routine.findById(req.params.routineId).populate(
+      'routine.exercise',
+      { name: 1, imageUrl: 1, _id: 0 }
+    );
+
+    res.json(routine);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+/**
  * @route   POST api/routines
  * @desc    Create new routine for user
  * @access  Private

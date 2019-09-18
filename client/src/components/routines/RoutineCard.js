@@ -31,7 +31,7 @@ const RoutineCard = routine => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.card}>
+    <Card className={`${classes.card} animated fadeIn`}>
       <CardContent>
         <Typography gutterBottom variant='h5' component='h2'>
           {routine.routine.routineName}

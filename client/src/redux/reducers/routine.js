@@ -1,12 +1,17 @@
 import {
   FETCH_ROUTINES_START,
   FETCH_ROUTINES_SUCCESS,
-  FETCH_ROUTINES_FAILED
+  FETCH_ROUTINES_FAILED,
+  FETCH_SINGLE_ROUTINE_FAILED,
+  FETCH_SINGLE_ROUTINE_SUCCESS,
+  FETCH_SINGLE_ROUTINE_START
 } from '../actions/types';
 
 const initialState = {
   routines: [],
-  loading: false
+  loading: false,
+  singleRoutine: null,
+  singleRoutineLoading: false
 };
 
 export default function(state = initialState, action) {
@@ -18,6 +23,11 @@ export default function(state = initialState, action) {
         ...state,
         loading: true
       };
+    case FETCH_SINGLE_ROUTINE_START:
+      return {
+        ...state,
+        singleRoutineLoading: true
+      };
     case FETCH_ROUTINES_SUCCESS:
       return {
         ...state,
@@ -27,7 +37,20 @@ export default function(state = initialState, action) {
     case FETCH_ROUTINES_FAILED:
       return {
         ...state,
-        loading: false
+        loading: false,
+        routines: []
+      };
+    case FETCH_SINGLE_ROUTINE_FAILED:
+      return {
+        ...state,
+        singleRoutineLoading: false,
+        singleRoutine: null
+      };
+    case FETCH_SINGLE_ROUTINE_SUCCESS:
+      return {
+        ...state,
+        singleRoutineLoading: false,
+        singleRoutine: payload
       };
     default:
       return state;

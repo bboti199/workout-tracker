@@ -6,7 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { connect } from 'react-redux';
-import { fetchRoutines } from '../../redux/actions/routine';
+import { createStructuredSelector } from 'reselect';
+import { fetchSingleRoutine } from '../../redux/actions/routine';
+import {
+  selectSingleRoutineLoading,
+  selectSingleRoutine
+} from '../../redux/selectors/routine';
 
 import ExerciseUpdateCard from './ExerciseUpdateCard';
 
@@ -20,28 +25,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const EditRoutine = ({
-  match: { params },
-  fetchRoutines,
-  fetching,
-  routines
+  routine,
+  fetchSingleRoutine,
+  loading,
+  match: { params }
 }) => {
-  const [routineData, setRoutineData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const classes = useStyles();
 
   useEffect(() => {
-    fetchRoutines();
+    fetchSingleRoutine(params.id);
   }, []);
 
-  useEffect(() => {
-    const rData = routines.find(routine => routine._id === params.id);
-    setRoutineData({
-      ...rData
-    });
-    setLoading(false);
-  }, [routines]);
-
-  return loading || fetching ? (
+  return loading || !routine ? (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <CircularProgress />
     </div>
@@ -55,14 +50,14 @@ const EditRoutine = ({
         alignItems='center'
       >
         <Typography gutterBottom variant='h5' component='h2'>
-          {routineData.routineName}
+          {routine.routineName}
         </Typography>
         <Typography variant='body2' color='textSecondary' component='p'>
-          {routineData.description}
+          {routine.description}
         </Typography>
 
-        {routineData.routine && routineData.routine.length > 0 ? (
-          routineData.routine.map(rData => (
+        {routine.routine && routine.routine.length > 0 ? (
+          routine.routine.map(rData => (
             <Grid
               key={rData._id}
               style={{ marginTop: '1rem' }}
@@ -83,12 +78,12 @@ const EditRoutine = ({
   );
 };
 
-const mapStateToProps = state => ({
-  routines: state.routine.routines,
-  fetching: state.routine.loading
+const mapStateToProps = createStructuredSelector({
+  loading: selectSingleRoutineLoading,
+  routine: selectSingleRoutine
 });
 
 export default connect(
   mapStateToProps,
-  { fetchRoutines }
+  { fetchSingleRoutine }
 )(EditRoutine);

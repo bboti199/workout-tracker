@@ -8,6 +8,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { connect } from 'react-redux';
 import { fetchRoutines } from '../../redux/actions/routine';
+import { createStructuredSelector } from 'reselect';
+import {
+  selectAllRoutines,
+  selectLoading
+} from '../../redux/selectors/routine';
 
 import RoutineCard from '../routines/RoutineCard';
 import EmptyRoutineCard from '../routines/EmptyRoutineCard';
@@ -71,9 +76,9 @@ const Dashboard = ({ routines, loading, fetchRoutines }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  routines: state.routine.routines,
-  loading: state.routine.loading
+const mapStateToProps = createStructuredSelector({
+  loading: selectLoading,
+  routines: selectAllRoutines
 });
 
 export default connect(
