@@ -5,14 +5,27 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   card: {
     marginTop: '2rem',
     maxWidth: 345
+  },
+  actions: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  fab: {
+    backgroundColor: '#f44336',
+    color: 'white',
+    '&:hover': {
+      backgroundColor: '#c62828'
+    }
   }
-});
+}));
 
 const RoutineCard = routine => {
   const classes = useStyles();
@@ -28,7 +41,7 @@ const RoutineCard = routine => {
         </Typography>
       </CardContent>
 
-      <CardActions>
+      <CardActions className={classes.actions}>
         <Button
           size='small'
           color='primary'
@@ -37,14 +50,14 @@ const RoutineCard = routine => {
         >
           View Progress
         </Button>
-        <Button
+        <Fab
           size='small'
-          color='default'
+          className={classes.fab}
           to={`/edit/${routine.routine._id}`}
           component={Link}
         >
-          Edit
-        </Button>
+          <EditIcon />
+        </Fab>
       </CardActions>
     </Card>
   );
