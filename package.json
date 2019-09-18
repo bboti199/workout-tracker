@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "engines": {
     "yarn": "1.17.3",
-    "node": "10.15.2"
+    "node": "12.9.1"
   },
   "description": "An app to track workout progress",
   "main": "server.js",

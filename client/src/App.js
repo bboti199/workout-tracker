@@ -6,6 +6,8 @@ import Landing from './components/pages/Landing';
 import LoginConnector from './components/pages/Login/LoginConnector';
 import RegisterConnector from './components/pages/Register/RegisterConnector';
 import Dashboard from './components/pages/Dashboard';
+import EditRoutine from './components/routines/EditRoutine';
+
 import PrivateRoute from './components/routing/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
@@ -35,6 +37,7 @@ function App() {
           <Route exact path='/login' component={LoginConnector} />
           <Route exact path='/register' component={RegisterConnector} />
           <PrivateRoute exact path='/dashboard' component={Dashboard} />
+          <PrivateRoute path='/edit/:id' component={EditRoutine} />
           <Route render={() => <h2>404 Page not Found</h2>} />
         </Switch>
       </Fragment>

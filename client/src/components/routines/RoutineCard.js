@@ -48,7 +48,7 @@ const RoutineCard = routine => {
           to={`/progress/${routine.routine._id}`}
           component={Link}
         >
-          View Progress
+          Progress
         </Button>
         <Fab
           size='small'
