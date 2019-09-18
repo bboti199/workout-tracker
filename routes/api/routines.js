@@ -47,6 +47,12 @@ router.post(
       check('routineName', 'Routine name is required')
         .not()
         .isEmpty(),
+      check('description', 'Description is required')
+        .not()
+        .isEmpty(),
+      check('routine', 'Routine is required')
+        .not()
+        .isEmpty(),
       check('routine.*.exercise', 'Exercise ID is required')
         .not()
         .isEmpty(),
@@ -65,7 +71,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { routineName, routine } = req.body;
+    const { routineName, routine, description } = req.body;
 
     routine.map(r => {
       Exercise.findById(r.exercise)
@@ -84,7 +90,8 @@ router.post(
     try {
       const newRoutine = new Routine({
         routineName,
-        routine
+        routine,
+        description
       });
 
       await newRoutine.save();
