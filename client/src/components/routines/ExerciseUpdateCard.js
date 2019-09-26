@@ -3,44 +3,27 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
+import Grid from '@material-ui/core/Grid';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   card: {
-    display: 'flex',
     width: '90vw'
   },
-  details: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
   cover: {
-    width: 151,
-    marginRight: '1rem'
-  },
-  fields: {
-    flexGrow: 1,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingLeft: theme.spacing(3),
-    paddingBottom: theme.spacing(1)
+    width: 200
   },
   fieldItem: {
     marginLeft: '1rem'
   },
   button: {
-    height: '50%',
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    marginLeft: 'auto',
-    marginRight: '4rem'
+    marginTop: '1rem',
+    marginBottom: '1rem'
   }
-}));
+});
 
 const ExerciseUpdateCard = ({ exerciseData }) => {
   const classes = useStyles();
@@ -67,63 +50,95 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
 
   return (
     <Card className={classes.card}>
-      <CardMedia
-        className={classes.cover}
-        image={exerciseData.exercise.imageUrl}
-      />
       <Fade in={true}>
-        <div className={classes.details}>
-          <CardContent className={classes.content}>
-            <Typography variant='subtitle1'>
-              {exerciseData.exercise.name}
-            </Typography>
-          </CardContent>
-          <div className={classes.fields}>
-            <TextField
-              label='Sets'
-              value={values.sets}
-              name='sets'
-              onChange={e => handleChange(e)}
-              type='number'
-              InputLabelProps={{
-                shrink: true
-              }}
-              className={classes.fieldItem}
-              margin='normal'
-              variant='outlined'
+        <Grid container direction='row' justify='center' alignItems='center'>
+          <Grid item xs={12} sm={3} align='center'>
+            <img
+              src={exerciseData.exercise.imageUrl}
+              className={classes.cover}
             />
-            <TextField
-              label='Reps'
-              value={values.repetitions}
-              name='repetitions'
-              onChange={e => handleChange(e)}
-              type='number'
-              InputLabelProps={{
-                shrink: true
-              }}
-              className={classes.fieldItem}
-              margin='normal'
-              variant='outlined'
-            />
-            <TextField
-              label='Weight'
-              value={values.weight}
-              name='weight'
-              onChange={e => handleChange(e)}
-              type='number'
-              InputLabelProps={{
-                shrink: true
-              }}
-              className={classes.fieldItem}
-              margin='normal'
-              variant='outlined'
-            />
-          </div>
-        </div>
+          </Grid>
+          <Grid item xs={12} sm={9}>
+            <Grid
+              container
+              direction='column'
+              justify='center'
+              alignItems='center'
+            >
+              <Grid item xs={12} sm={9}>
+                <CardContent className={classes.content}>
+                  <Typography variant='subtitle1'>
+                    {exerciseData.exercise.name}
+                  </Typography>
+                </CardContent>
+              </Grid>
+              <Grid item xs={12} sm={9} align='center'>
+                <Grid
+                  container
+                  direction='row'
+                  justify='center'
+                  alignItems='center'
+                >
+                  <Grid item xs={12} sm={3}>
+                    <TextField
+                      label='Sets'
+                      value={values.sets}
+                      name='sets'
+                      onChange={e => handleChange(e)}
+                      type='number'
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      className={classes.fieldItem}
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextField
+                      label='Reps'
+                      value={values.repetitions}
+                      name='repetitions'
+                      onChange={e => handleChange(e)}
+                      type='number'
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      className={classes.fieldItem}
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <TextField
+                      label='Weight'
+                      value={values.weight}
+                      name='weight'
+                      onChange={e => handleChange(e)}
+                      type='number'
+                      InputLabelProps={{
+                        shrink: true
+                      }}
+                      className={classes.fieldItem}
+                      margin='normal'
+                      variant='outlined'
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={3} align='center'>
+                    <Button
+                      color='primary'
+                      variant='contained'
+                      className={classes.button}
+                    >
+                      Save
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </Fade>
-      <Button color='primary' variant='contained' className={classes.button}>
-        Save
-      </Button>
     </Card>
   );
 };
