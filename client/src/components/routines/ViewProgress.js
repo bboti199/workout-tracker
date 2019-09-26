@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -13,7 +13,9 @@ import {
   selectSingleRoutine
 } from '../../redux/selectors/routine';
 
-import ExerciseUpdateCard from './ExerciseUpdateCard';
+import createChartData from '../../utils/createChartData';
+
+import ProgressCard from './ProgressCard';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const EditRoutine = ({
+const ViewProgress = ({
   routine,
   fetchSingleRoutine,
   loading,
@@ -67,7 +69,10 @@ const EditRoutine = ({
               md={12}
               lg={12}
             >
-              <ExerciseUpdateCard exerciseData={rData} id={params.id} />
+              <ProgressCard
+                exerciseData={rData}
+                chartData={createChartData(rData.progress)}
+              />
             </Grid>
           ))
         ) : (
@@ -86,4 +91,4 @@ const mapStateToProps = createStructuredSelector({
 export default connect(
   mapStateToProps,
   { fetchSingleRoutine }
-)(EditRoutine);
+)(ViewProgress);

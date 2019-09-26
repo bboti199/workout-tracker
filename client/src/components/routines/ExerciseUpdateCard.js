@@ -126,6 +126,7 @@ const ExerciseUpdateCard = ({
             <img
               src={exerciseData.exercise.imageUrl}
               className={classes.cover}
+              alt='exercise'
             />
           </Grid>
           <Grid item xs={12} sm={9}>
