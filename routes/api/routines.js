@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res) => {
     const routinesArr = user.routines.map(async routine => {
       const r = await Routine.findById(routine._id).populate(
         'routine.exercise',
-        { name: 1, imageUrl: 1, _id: 0 }
+        { name: 1, imageUrl: 1, _id: 1 }
       );
       return r;
     });
@@ -43,7 +43,7 @@ router.get('/:routineId', auth, async (req, res) => {
   try {
     const routine = await Routine.findById(req.params.routineId).populate(
       'routine.exercise',
-      { name: 1, imageUrl: 1, _id: 0 }
+      { name: 1, imageUrl: 1, _id: 1 }
     );
 
     res.json(routine);

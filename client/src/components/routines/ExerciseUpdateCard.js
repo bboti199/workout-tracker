@@ -8,6 +8,13 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 import Grid from '@material-ui/core/Grid';
+import axios from 'axios';
+import setAuthToken from '../../utils/setAuthToken';
+import { connect } from 'react-redux';
+import {
+  enqueueSnackbar,
+  closeSnackbar
+} from '../../redux/actions/notification';
 
 const useStyles = makeStyles({
   card: {
@@ -25,13 +32,19 @@ const useStyles = makeStyles({
   }
 });
 
-const ExerciseUpdateCard = ({ exerciseData }) => {
+const ExerciseUpdateCard = ({
+  exerciseData,
+  id,
+  enqueueSnackbar,
+  closeSnackbar
+}) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     sets: 0,
     repetitions: 0,
     weight: 0
   });
+  const [updating, setUpdating] = useState(false);
 
   useEffect(() => {
     if (exerciseData.progress[0]) {
@@ -46,6 +59,63 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
 
   const handleChange = e => {
     setValues({ ...values, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      setUpdating(true);
+      try {
+        const config = {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+
+        const body = JSON.stringify({
+          exercise: exerciseData.exercise._id,
+          weight: values.weight,
+          sets: values.sets,
+          repetitions: values.repetitions
+        });
+
+        await axios.post(`/api/routines/${id}`, body, config);
+
+        enqueueSnackbar({
+          message: 'Saved successfully!',
+          options: {
+            key: new Date().getTime() + Math.random(),
+            variant: 'success',
+            action: key => (
+              <Button
+                style={{ color: 'white' }}
+                onClick={() => closeSnackbar(key)}
+              >
+                got it
+              </Button>
+            )
+          }
+        });
+
+        setUpdating(false);
+      } catch (err) {
+        enqueueSnackbar({
+          message: 'Something went wrong...',
+          options: {
+            key: new Date().getTime() + Math.random(),
+            variant: 'error',
+            action: key => (
+              <Button
+                style={{ color: 'white' }}
+                onClick={() => closeSnackbar(key)}
+              >
+                got it
+              </Button>
+            )
+          }
+        });
+      }
+    }
   };
 
   return (
@@ -92,6 +162,7 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
                       className={classes.fieldItem}
                       margin='normal'
                       variant='outlined'
+                      disabled={updating}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -107,6 +178,7 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
                       className={classes.fieldItem}
                       margin='normal'
                       variant='outlined'
+                      disabled={updating}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -122,6 +194,7 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
                       className={classes.fieldItem}
                       margin='normal'
                       variant='outlined'
+                      disabled={updating}
                     />
                   </Grid>
                   <Grid item xs={12} sm={3} align='center'>
@@ -129,6 +202,7 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
                       color='primary'
                       variant='contained'
                       className={classes.button}
+                      onClick={() => handleSubmit()}
                     >
                       Save
                     </Button>
@@ -143,4 +217,7 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
   );
 };
 
-export default ExerciseUpdateCard;
+export default connect(
+  null,
+  { enqueueSnackbar, closeSnackbar }
+)(ExerciseUpdateCard);

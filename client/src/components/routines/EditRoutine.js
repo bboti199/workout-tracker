@@ -67,7 +67,7 @@ const EditRoutine = ({
               md={12}
               lg={12}
             >
-              <ExerciseUpdateCard exerciseData={rData} />
+              <ExerciseUpdateCard exerciseData={rData} id={params.id} />
             </Grid>
           ))
         ) : (
