@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -65,60 +66,61 @@ const ExerciseUpdateCard = ({ exerciseData }) => {
   };
 
   return (
-    <Card className={`${classes.card} animated fadeIn`}>
+    <Card className={classes.card}>
       <CardMedia
         className={classes.cover}
         image={exerciseData.exercise.imageUrl}
       />
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography variant='subtitle1'>
-            {exerciseData.exercise.name}
-          </Typography>
-        </CardContent>
-        <div className={classes.fields}>
-          <TextField
-            label='Sets'
-            value={values.sets}
-            name='sets'
-            onChange={e => handleChange(e)}
-            type='number'
-            InputLabelProps={{
-              shrink: true
-            }}
-            className={classes.fieldItem}
-            margin='normal'
-            variant='outlined'
-          />
-          <TextField
-            label='Reps'
-            value={values.repetitions}
-            name='repetitions'
-            onChange={e => handleChange(e)}
-            type='number'
-            InputLabelProps={{
-              shrink: true
-            }}
-            className={classes.fieldItem}
-            margin='normal'
-            variant='outlined'
-          />
-          <TextField
-            label='Weight'
-            value={values.weight}
-            name='weight'
-            onChange={e => handleChange(e)}
-            type='number'
-            InputLabelProps={{
-              shrink: true
-            }}
-            className={classes.fieldItem}
-            margin='normal'
-            variant='outlined'
-          />
+      <Fade in={true}>
+        <div className={classes.details}>
+          <CardContent className={classes.content}>
+            <Typography variant='subtitle1'>
+              {exerciseData.exercise.name}
+            </Typography>
+          </CardContent>
+          <div className={classes.fields}>
+            <TextField
+              label='Sets'
+              value={values.sets}
+              name='sets'
+              onChange={e => handleChange(e)}
+              type='number'
+              InputLabelProps={{
+                shrink: true
+              }}
+              className={classes.fieldItem}
+              margin='normal'
+              variant='outlined'
+            />
+            <TextField
+              label='Reps'
+              value={values.repetitions}
+              name='repetitions'
+              onChange={e => handleChange(e)}
+              type='number'
+              InputLabelProps={{
+                shrink: true
+              }}
+              className={classes.fieldItem}
+              margin='normal'
+              variant='outlined'
+            />
+            <TextField
+              label='Weight'
+              value={values.weight}
+              name='weight'
+              onChange={e => handleChange(e)}
+              type='number'
+              InputLabelProps={{
+                shrink: true
+              }}
+              className={classes.fieldItem}
+              margin='normal'
+              variant='outlined'
+            />
+          </div>
         </div>
-      </div>
-
+      </Fade>
       <Button color='primary' variant='contained' className={classes.button}>
         Save
       </Button>

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -31,15 +32,17 @@ const RoutineCard = routine => {
   const classes = useStyles();
 
   return (
-    <Card className={`${classes.card} animated fadeIn`}>
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='h2'>
-          {routine.routine.routineName}
-        </Typography>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          {routine.routine.description}
-        </Typography>
-      </CardContent>
+    <Card className={classes.card}>
+      <Fade in={true}>
+        <CardContent>
+          <Typography gutterBottom variant='h5' component='h2'>
+            {routine.routine.routineName}
+          </Typography>
+          <Typography variant='body2' color='textSecondary' component='p'>
+            {routine.routine.description}
+          </Typography>
+        </CardContent>
+      </Fade>
 
       <CardActions className={classes.actions}>
         <Button

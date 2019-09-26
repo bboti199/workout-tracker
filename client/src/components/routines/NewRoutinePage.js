@@ -10,12 +10,7 @@ const NewRoutinePage = ({ fetchExercises, exercises }) => {
   useEffect(() => {
     fetchExercises();
   }, []);
-  return (
-    <div>
-      {console.log(exercises)}
-      <p>test</p>
-    </div>
-  );
+  return <div>{console.log(exercises)}</div>;
 };
 
 const mapStateToProps = createStructuredSelector({
