@@ -200,8 +200,8 @@ const ExerciseUpdateCard = ({
                   </Grid>
                   <Grid item xs={12} sm={3} align='center'>
                     <Button
-                      color='primary'
-                      variant='contained'
+                      color='secondary'
+                      variant='outlined'
                       className={classes.button}
                       onClick={() => handleSubmit()}
                     >

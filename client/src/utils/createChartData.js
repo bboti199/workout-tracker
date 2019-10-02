@@ -6,7 +6,7 @@ export default function(progressData) {
     reps: data.repetitions,
     weight: data.weight,
     workload: data.sets * data.repetitions * data.weight,
-    date: moment(data.date).format('DD-MM-YYYY')
+    date: moment(data.date).format('DD MMM Y')
   }));
 
   return chartData.reverse();

@@ -76,7 +76,7 @@ router.post(
         .not()
         .isEmpty(),
       check(
-        'routine.*.progress.*.weight',
+        'routine.*.exercise.progress.*.weight',
         'Weight is requierd and has to be a number'
       )
         .isNumeric()

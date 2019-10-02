@@ -5,8 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
+// import Fab from '@material-ui/core/Fab';
+// import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
 import Fade from '@material-ui/core/Fade';
 
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   },
   actions: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'flex-start'
   },
   fab: {
     backgroundColor: '#f44336',
@@ -53,14 +53,23 @@ const RoutineCard = routine => {
         >
           Progress
         </Button>
-        <Fab
+        {/* <Fab
           size='small'
           className={classes.fab}
           to={`/edit/${routine.routine._id}`}
           component={Link}
         >
           <EditIcon />
-        </Fab>
+        </Fab> */}
+        <Button
+          size='small'
+          color='secondary'
+          variant='outlined'
+          to={`/edit/${routine.routine._id}`}
+          component={Link}
+        >
+          Update
+        </Button>
       </CardActions>
     </Card>
   );

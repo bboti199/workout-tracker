@@ -41,7 +41,7 @@ function App() {
           <PrivateRoute exact path='/dashboard' component={Dashboard} />
           <PrivateRoute path='/edit/:id' component={EditRoutine} />
           <PrivateRoute path='/progress/:id' component={ViewProgress} />
-          <PrivateRoute exact path='/newRoutine' component={NewRoutinePage} />
+          <PrivateRoute exact path='/create' component={NewRoutinePage} />
           <Route render={() => <h2>404 Page not Found</h2>} />
         </Switch>
       </Fragment>

@@ -65,7 +65,7 @@ const Dashboard = ({ routines, loading, fetchRoutines }) => {
         <Fab
           className={classes.fab}
           color='primary'
-          to='/newRoutine'
+          to='/create'
           component={Link}
         >
           <AddIcon />
