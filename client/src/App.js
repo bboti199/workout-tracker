@@ -7,7 +7,7 @@ import LoginConnector from './components/pages/Login/LoginConnector';
 import RegisterConnector from './components/pages/Register/RegisterConnector';
 import Dashboard from './components/pages/Dashboard';
 import EditRoutine from './components/routines/EditRoutine';
-import NewRoutinePage from './components/routines/NewRoutinePage';
+import NewRoutinePage from './components/pages/NewRoutinePage/NewRoutinePage';
 import ViewProgress from './components/routines/ViewProgress';
 
 import PrivateRoute from './components/routing/PrivateRoute';

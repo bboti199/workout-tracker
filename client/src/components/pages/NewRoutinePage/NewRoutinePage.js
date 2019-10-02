@@ -5,13 +5,13 @@ import { createStructuredSelector } from 'reselect';
 import {
   selectAllExercises,
   selectLoading
-} from '../../redux/selectors/exercise';
+} from '../../../redux/selectors/exercise';
 
-import { fetchExercises } from '../../redux/actions/exercise';
+import { fetchExercises } from '../../../redux/actions/exercise';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import SearchBar from '../layout/SearchBar';
+import SearchBar from './SearchBar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
