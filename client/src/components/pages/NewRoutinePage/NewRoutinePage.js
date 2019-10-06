@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-
+import axios from 'axios';
+import setAuthToken from '../../../utils/setAuthToken';
+import {
+  enqueueSnackbar,
+  closeSnackbar
+} from '../../../redux/actions/notification';
 import {
   selectAllExercises,
   selectLoading
@@ -29,7 +34,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const NewRoutinePage = ({ fetchExercises, exercises, loading }) => {
+const NewRoutinePage = ({
+  fetchExercises,
+  exercises,
+  loading,
+  enqueueSnackbar,
+  closeSnackbar,
+  history
+}) => {
   const classes = useStyles();
 
   const [selectedExercises, setSelectedExercises] = useState([]);
@@ -105,6 +117,59 @@ const NewRoutinePage = ({ fetchExercises, exercises, loading }) => {
     });
   };
 
+  const handleSubmit = async () => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+
+      if (!formData.routine.length > 0) {
+        enqueueSnackbar({
+          message: 'You must add exercises to the routine!',
+          options: {
+            key: new Date().getTime() + Math.random(),
+            variant: 'error',
+            action: key => (
+              <Button
+                style={{ color: 'white' }}
+                onClick={() => closeSnackbar(key)}
+              >
+                got it
+              </Button>
+            )
+          }
+        });
+      }
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      const body = JSON.stringify({ ...formData });
+
+      try {
+        await axios.post('/api/routines', body, config);
+        history.push('/dashboard');
+      } catch (err) {
+        enqueueSnackbar({
+          message: 'Something went wrong...',
+          options: {
+            key: new Date().getTime() + Math.random(),
+            variant: 'error',
+            action: key => (
+              <Button
+                style={{ color: 'white' }}
+                onClick={() => closeSnackbar(key)}
+              >
+                got it
+              </Button>
+            )
+          }
+        });
+      }
+    }
+  };
+
   return (
     <Grid
       container
@@ -161,9 +226,8 @@ const NewRoutinePage = ({ fetchExercises, exercises, loading }) => {
         <Button
           color='primary'
           variant='contained'
-          onClick={() =>
-            console.log(JSON.stringify(formData.routine, undefined, 2))
-          }
+          onClick={() => handleSubmit()}
+          style={{ marginTop: '1rem' }}
         >
           Save
         </Button>
@@ -179,5 +243,5 @@ const mapStateToProps = createStructuredSelector({
 
 export default connect(
   mapStateToProps,
-  { fetchExercises }
+  { fetchExercises, enqueueSnackbar, closeSnackbar }
 )(NewRoutinePage);

@@ -35,7 +35,10 @@ const ExerciseInfoCard = ({
 
   return (
     <Card className={classes.card}>
-      <CloseIcon onClick={() => removeExercise(exercise._id)} />
+      <CloseIcon
+        onClick={() => removeExercise(exercise._id)}
+        style={{ marginLeft: '5px', marginTop: '10px' }}
+      />
       <Grid container direction='row' justify='center' alignItems='center'>
         <Grid item xs={12} sm={3} align='center'>
           <img
