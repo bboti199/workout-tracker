@@ -73,7 +73,19 @@ const Dashboard = ({ routines, loading, fetchRoutines }) => {
       </Tooltip>
     </div>
   ) : (
-    <EmptyRoutineCard />
+    <React.Fragment>
+      <EmptyRoutineCard />
+      <Tooltip title='New routine' aria-label='add' placement='left'>
+        <Fab
+          className={classes.fab}
+          color='primary'
+          to='/create'
+          component={Link}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+    </React.Fragment>
   );
 };
 

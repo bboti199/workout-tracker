@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import Fab from '@material-ui/core/Fab';
-// import EditIcon from '@material-ui/icons/Edit';
 import { Link } from 'react-router-dom';
-import Fade from '@material-ui/core/Fade';
+import CloseIcon from '@material-ui/icons/Close';
+import CardHeader from '@material-ui/core/CardHeader';
+import IconButton from '@material-ui/core/IconButton';
+import DeleteDialog from './DeleteDialog';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -30,30 +30,53 @@ const useStyles = makeStyles(theme => ({
 
 const RoutineCard = routine => {
   const classes = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
-    <Card className={classes.card}>
-      <Fade in={true}>
-        <CardContent>
-          <Typography gutterBottom variant='h5' component='h2'>
-            {routine.routine.routineName}
-          </Typography>
-          <Typography variant='body2' color='textSecondary' component='p'>
-            {routine.routine.description}
-          </Typography>
-        </CardContent>
-      </Fade>
+    <React.Fragment>
+      <DeleteDialog
+        open={open}
+        routine={routine.routine}
+        handleClose={handleClose}
+        setOpen={setOpen}
+      />
+      <Card className={classes.card}>
+        <CardHeader
+          title={
+            <Typography gutterBottom variant='h5' component='h2'>
+              {routine.routine.routineName}
+            </Typography>
+          }
+          action={
+            <IconButton onClick={handleClickOpen}>
+              <CloseIcon />
+            </IconButton>
+          }
+          subheader={
+            <Typography variant='body2' color='textSecondary' component='p'>
+              {routine.routine.description}
+            </Typography>
+          }
+        />
 
-      <CardActions className={classes.actions}>
-        <Button
-          size='small'
-          color='primary'
-          to={`/progress/${routine.routine._id}`}
-          component={Link}
-        >
-          Progress
-        </Button>
-        {/* <Fab
+        <CardActions className={classes.actions}>
+          <Button
+            size='small'
+            color='primary'
+            to={`/progress/${routine.routine._id}`}
+            component={Link}
+          >
+            Progress
+          </Button>
+          {/* <Fab
           size='small'
           className={classes.fab}
           to={`/edit/${routine.routine._id}`}
@@ -61,17 +84,18 @@ const RoutineCard = routine => {
         >
           <EditIcon />
         </Fab> */}
-        <Button
-          size='small'
-          color='secondary'
-          variant='outlined'
-          to={`/edit/${routine.routine._id}`}
-          component={Link}
-        >
-          Update
-        </Button>
-      </CardActions>
-    </Card>
+          <Button
+            size='small'
+            color='secondary'
+            variant='outlined'
+            to={`/edit/${routine.routine._id}`}
+            component={Link}
+          >
+            Update
+          </Button>
+        </CardActions>
+      </Card>
+    </React.Fragment>
   );
 };
 
