@@ -10,6 +10,10 @@ const useStyles = makeStyles(theme => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     width: '85vw'
+  },
+  selectorContainer: {
+    height: '30vh',
+    overflow: 'auto'
   }
 }));
 
@@ -26,39 +30,45 @@ const options = {
   ]
 };
 
-const SearchBar = ({ data }) => {
+const SearchBar = ({ data, addExercise }) => {
   const classes = useStyles();
 
-  const [exercises, setExercises] = useState('');
+  const [exercises, setExercises] = useState(data);
 
   const handleSearch = e => {
     const fuse = new Fuse(data, options);
 
-    setExercises(fuse.search(e.target.value));
+    const res = fuse.search(e.target.value);
+
+    setExercises(res);
   };
 
   return (
-    <div>
-      <TextField
-        label='Enter exercise name or body part...'
-        type='search'
-        name='searchField'
-        variant='outlined'
-        className={classes.textField}
-        margin='normal'
-        onChange={e => handleSearch(e)}
-      />
-      <Grid container direction='column' alignContent='center' justify='center'>
-        <Grid item xs={12} sm={12}>
-          <div style={{ height: '30vh', overflow: 'auto' }}>
-            {exercises &&
-              exercises.map(exercise => (
-                <SelectFieldItem key={exercise._id} exercise={exercise} />
-              ))}
-          </div>
-        </Grid>
+    <Grid container direction='column' alignContent='center' justify='center'>
+      <Grid item xs={12} sm={12}>
+        <TextField
+          label='Enter exercise name or body part ...'
+          type='search'
+          name='searchField'
+          variant='outlined'
+          className={classes.textField}
+          margin='normal'
+          onChange={e => handleSearch(e)}
+        />
       </Grid>
-    </div>
+      <Grid item xs={12} sm={12}>
+        <div className={classes.selectorContainer}>
+          {exercises &&
+            exercises.map(exercise => (
+              <SelectFieldItem
+                key={exercise._id}
+                exercise={exercise}
+                handleClick={addExercise}
+              />
+            ))}
+        </div>
+      </Grid>
+    </Grid>
   );
 };
 

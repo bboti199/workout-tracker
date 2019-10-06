@@ -85,7 +85,7 @@ const Landing = ({ isAuthenticated }) => {
             component={RouterLink}
             className='animated fadeInUp delay-1s'
           >
-            Get Started!
+            Get Started
           </Button>
         </Grid>
       )}
