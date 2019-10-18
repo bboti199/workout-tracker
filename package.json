@@ -2,8 +2,8 @@
   "name": "progressive-overload-tracker",
   "version": "1.0.0",
   "engines": {
-    "yarn": "1.17.3",
-    "node": "12.9.1"
+    "yarn": "1.19.1",
+    "node": "12.11.1"
   },
   "description": "An app to track workout progress",
   "main": "server.js",

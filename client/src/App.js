@@ -9,6 +9,7 @@ import Dashboard from './components/pages/Dashboard';
 import EditRoutine from './components/routines/EditRoutine';
 import NewRoutinePage from './components/pages/NewRoutinePage/NewRoutinePage';
 import ViewProgress from './components/routines/ViewProgress';
+import Profile from './components/pages/ProfilePage/Profile';
 
 import PrivateRoute from './components/routing/PrivateRoute';
 
@@ -42,6 +43,7 @@ function App() {
           <PrivateRoute path='/edit/:id' component={EditRoutine} />
           <PrivateRoute path='/progress/:id' component={ViewProgress} />
           <PrivateRoute exact path='/create' component={NewRoutinePage} />
+          <PrivateRoute exact path='/profile' component={Profile} />
           <Route render={() => <h2>404 Page not Found</h2>} />
         </Switch>
       </Fragment>
